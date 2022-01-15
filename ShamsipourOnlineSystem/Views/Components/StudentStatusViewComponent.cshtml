@@ -1,0 +1,352 @@
+﻿@using PersianTranlation.DateConvertor
+@model StudentStatusViewModel
+
+<button onclick="GetHistory('@Model.Student.StudentId')" class="check-btn sqr-btn btn btn-darkaqua">جزئیات لحظه ای</button>
+
+@section Scripts
+{
+    <script src="~/js/Index-min.js"></script>
+}
+
+
+<div class="modal fade" id="@Model.Student.StudentId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="overflow-y: scroll">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">وضعیت دانشجو </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body align-self-center">
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+
+                    <fieldset class="form-group">
+                        <table class="table table-bordered table-responsive-sm">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 9%;">مرحله</th>
+                                    <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 6%;">وضعیت</th>
+                                    <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 9%;">آخرین بررسی</th>
+                                    <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 60%;">دستورات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>مسئول آموزش</td>
+                                    <td>@(Model.EduStage==null && Model.IsEduIsPending == false ? "هنوز وارد نشده": Model.EduStage.StageStatus == null && Model.IsEduIsPending == true?"در صف انتظار": Model.EduStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.EduStage == null || Model.EduStage.CheckoutTime==null   ? "____": Model.EduStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+                                        @if (Model.EduStage is not { StageStatus: false })
+                                        {
+                                            if (Model.EduStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.EduStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'EduExpert/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>کارشناس فارغ التحصیلان</td>
+                                    <td>@(Model.GradStage == null && Model.IsGradIsPending == false ? "هنوز وارد نشده" : Model.GradStage.StageStatus == null && Model.IsGradIsPending == true ? "در صف انتظار" :Model.GradStage.StageStatus.Value==true?"تکمیل شده": Model.EduStage.IsReversedFromGradExpert != true ? "نقصی مدارک" : "برگشت خورده به مرحله قبلی")</td>
+                                    <td>@(Model.GradStage?.CheckoutTime==null   ? "____": Model.GradStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+                                        @if (Model.GradStage is not { StageStatus: false } || Model.EduStage.IsReversedFromGradExpert == true)
+                                        {
+                                            if (Model.GradStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.GradStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'GraduatesExpert/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>امور مالی</td>
+                                    <td>@(Model.FinantialStage == null && Model.IsfinantialIsPending == false ? "هنوز وارد نشده" : Model.FinantialStage.StageStatus == null && Model.IsfinantialIsPending == true ? "در صف انتظار" :Model.FinantialStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.FinantialStage?.CheckoutTime==null   ? "____": Model.FinantialStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+                                        @if (Model.FinantialStage is not { StageStatus: false })
+                                        {
+                                            if (Model.FinantialStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.FinantialStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1 ">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'Financial/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>خوابگاه</td>
+                                    <td>@(Model.DormStage == null && Model.IsDormIsPending == false ? "هنوز وارد نشده" : Model.DormStage.StageStatus == null && Model.IsDormIsPending == true ? "در صف انتظار" :Model.DormStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.DormStage?.CheckoutTime==null   ? "____": Model.DormStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+                                        @if (Model.DormStage is not { StageStatus: false })
+                                        {
+                                            if (Model.DormStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.DormStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'Dorm/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>امور دانشجویی</td>
+                                    <td>@(Model.AffairsStage == null && Model.IsAffairsIsPending == false ? "هنوز وارد نشده" : Model.AffairsStage.StageStatus == null && Model.IsAffairsIsPending == true ? "در صف انتظار" :Model.AffairsStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.AffairsStage?.CheckoutTime==null  ? "____": Model.AffairsStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+                                        @if (Model.AffairsStage is not { StageStatus: false })
+                                        {
+                                            if (Model.AffairsStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.AffairsStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'StudentAffairs/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>کتابخانه</td>
+                                    <td>@(Model.LibraryStage == null && Model.IsLibraryIsPending == false ? "هنوز وارد نشده" : Model.LibraryStage.StageStatus == null && Model.IsLibraryIsPending == true ? "در صف انتظار" :Model.LibraryStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.LibraryStage?.CheckoutTime==null   ? "____": Model.LibraryStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+                                        @if (Model.LibraryStage is not { StageStatus: false })
+                                        {
+                                            if (Model.LibraryStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.LibraryStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'Library/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>آزمایشگاه</td>
+                                    <td>@(Model.LaboratoryStage == null && Model.IsLaboratoryIsPending == false ? "هنوز وارد نشده" : Model.LaboratoryStage.StageStatus == null && Model.IsLaboratoryIsPending == true ? "در صف انتظار" :Model.LaboratoryStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.LaboratoryStage?.CheckoutTime==null    ? "____": Model.LaboratoryStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+
+                                        @if (Model.LaboratoryStage is not { StageStatus: false })
+                                        {
+                                            if (Model.LaboratoryStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.LaboratoryStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'Laboratory/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>پایان نامه</td>
+                                    <td>@(Model.ThesisStage == null && Model.IsThesisIsPending == false ? "هنوز وارد نشده" : Model.ThesisStage.StageStatus == null && Model.IsThesisIsPending == true ? "در صف انتظار" :Model.ThesisStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.ThesisStage?.CheckoutTime==null  ? "____": Model.ThesisStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+
+                                        @if (Model.ThesisStage is not { StageStatus: false })
+                                        {
+                                            if (Model.ThesisStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.ThesisStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'ThesisExpert/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>بخش آی تی</td>
+                                    <td>@(Model.ITStage == null && Model.IsItIsPending == false ? "هنوز وارد نشده" : Model.ITStage.StageStatus == null && Model.IsItIsPending == true ? "در صف انتظار" :Model.ITStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.ITStage?.CheckoutTime==null   ? "____": Model.ITStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+
+                                        @if (Model.ITStage is not { StageStatus: false })
+                                        {
+                                            if (Model.ITStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.ITStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'ITExpert/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>معاونت پژوهشی</td>
+                                    <td>@(Model.ResearchStage == null && Model.IsRessearchIsPending == false ? "هنوز وارد نشده" : Model.ResearchStage.StageStatus == null && Model.IsRessearchIsPending == true ? "در صف انتظار" :Model.ResearchStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.ResearchStage?.CheckoutTime==null  ? "____": Model.ResearchStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+
+                                        @if (Model.ResearchStage is not { StageStatus: false })
+                                        {
+                                            if (Model.ResearchStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.ResearchStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'ResearchAssistant/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>فارغ التحصیلان بخش نهایی</td>
+                                    <td>@(Model.FinalGradStage == null && Model.IsFGradIsPending == false ? "هنوز وارد نشده" : Model.FinalGradStage.StageStatus == null && Model.IsFGradIsPending == true ? "در صف انتظار" :Model.FinalGradStage.StageStatus.Value==true?"تکمیل شده":"نقصی مدارک")</td>
+                                    <td>@(Model.FinalGradStage?.CheckoutTime==null  ? "____": Model.FinalGradStage.CheckoutTime.Value.ToShamsiCalender())</td>
+                                    <td>
+
+                                        @if (Model.FinalGradStage is not { StageStatus: false })
+                                        {
+                                            if (Model.FinalGradStage is { StageStatus: true })
+                                            {
+                                                <i class="fas fa-check-circle"></i>
+                                            }
+                                            else
+                                            {
+                                                <span>________</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button onclick="StageDescrbtion('@Model.FinalGradStage.ReverseDescribtion', '@Model.Student.StudentId')" class=" btn btn--danger mb-sm-1">مشاهده توضیحات نقصی</button>
+                                            <button onclick="RecheckRequest('@Model.Student.StudentId', 'FinalGraduatesExpert/RecheckStudent')" class=" btn btn-darkaqua">بازدرخواست چک شدن مدارک</button>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn--danger text-white" data-dismiss="modal">بستن</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="@(Model.Student.StudentId)2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">توضیحات کارشناس</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                    <fieldset class="form-group">
+                        <label for="basicInput"></label>
+                        <textarea style="height: 130px" class="col-12" id="@(Model.Student.StudentId)StDes" placeholder="توضیحاتی وارد نشده"></textarea>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn--danger text-white" data-dismiss="modal">بستن</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="@(Model.Student.StudentId)3" url="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">توضیحات اضافی بازدرخواست درخواست</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                    <fieldset class="form-group">
+                        <label for="basicInput"></label>
+                        <textarea id="@(Model.Student.StudentId)Des" style="height: 130px" class="col-12" placeholder="می توانید توضیحات اضافی برای بازدرخواست خود ثبت کنید"></textarea>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn--danger shadow text-white" data-dismiss="modal">بستن</a>
+                <a onclick="RecheckAccept('@Model.Student.StudentId')" class="btn btn-darkaqua shadow text-white" data-dismiss="modal">ارسال</a>
+            </div>
+        </div>
+    </div>
+</div>
+

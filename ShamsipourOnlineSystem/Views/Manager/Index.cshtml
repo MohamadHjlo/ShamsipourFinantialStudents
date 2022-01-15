@@ -1,0 +1,131 @@
+﻿@addTagHelper *, LazZiya.TagHelpers
+@model ManagerViewModel
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="mt-5 mb-5 text-title">سامانه ثبت درخواست فارغ التحصیلی دانشجویان </h1>
+        <h2 class="mt-5 mb-5 text-title-experts">پنل مدیریت دانشجویان ثبت شده در سامانه </h2>
+        <div class="page-active">
+            <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-12 box-shadow pt-5 box-container mt-5 pb-3">
+                <table class="table table-bordered table-responsive-sm table-hover">
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th>شماره دانشجویی</th>
+                            <th>شناسه در برنامه</th>
+                            <th>کد ملی</th>
+                            <th>وضعیت</th>
+                            <th>دستورات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model.Students)
+                            {
+                                <tr>
+                                    <td>@item.StudentId</td>
+                                    <td>@item.Id</td>
+                                    <td>@(item.NationalNo)</td>
+                                    <td>@(item.IsPending==true?"در صف انتظار":item.IsReversed==true?"برگشت خورده":item.IsFinaled==true?"نهایی شده":"درخواستی ثبت نکرده")</td>
+                                    <td>
+                                        <button onclick="RemoveStudent('@item.StudentId')" class="btn btn--danger">حذف</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">دانشجویی وجود ندارد</div>
+                        }
+
+                    </tbody>
+                </table>
+                <div class="  text-center">
+                    <paging total-records="Model.TotalRecords"
+                            page-no="Model.CurrentPage"
+                            page-size="Model.PageSize"
+                            show-prev-next="true"
+                            show-total-pages="true"
+                            show-total-records="true"
+                            show-page-size-nav="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="Page"
+                            query-string-key-page-size="PageSize"
+                            gap-size="2">
+                    </paging>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+<link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/Sweetalert2/sweetalert2.min.js"></script>
+<script>
+    function RemoveStudent(studentId) {
+
+        swal.fire({
+            title: 'حذف دانشجو',
+            text: "کاربر گرامی از حذف شخص مطمئن هستید؟ " + "" +
+                " نکته : با حذف دانشجو، تمامی درخواست های شخص (چه فعال و چه غیر فعال) نیز حذف خواهند شد",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#37cda3',
+            confirmButtonText: 'بله ، شخص حذف شود',
+            cancelButtonText: 'خیر'
+        }).then((result) => {
+
+            if (result.value) {
+
+                var data = new FormData();
+
+                data.append("studentId", studentId);
+
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    url: "manager/RemoveStudent",
+                    data: data,
+                    success: function (data) {
+                        if (data == true) {
+                            swal.fire(
+                                'موفق!',
+                                data.message,
+                                'success'
+                            ).then(function (isConfirm) {
+                                location.reload();
+                            });
+                        } else if (data == false) {
+
+                            swal.fire(
+                                'هشدار!',
+                                data.message,
+                                'warning'
+                            );
+                        }
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+
+                });
+
+            }
+        });
+    }
+
+
+</script>
+}
+

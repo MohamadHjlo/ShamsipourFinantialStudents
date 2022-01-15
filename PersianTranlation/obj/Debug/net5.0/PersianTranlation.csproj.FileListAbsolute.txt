@@ -1,0 +1,12 @@
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\bin\Debug\net5.0\PersianTranlation.deps.json
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\bin\Debug\net5.0\PersianTranlation.dll
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\bin\Debug\net5.0\ref\PersianTranlation.dll
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\bin\Debug\net5.0\PersianTranlation.pdb
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.csproj.AssemblyReference.cache
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.AssemblyInfoInputs.cache
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.AssemblyInfo.cs
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.csproj.CoreCompileInputs.cache
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.dll
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\ref\PersianTranlation.dll
+C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.pdb

@@ -1,0 +1,288 @@
+﻿@using ShamsipourOnlineSystem.Data
+@using System.Security.Claims
+@inject ScopeContext _scope
+<!DOCTYPE html>
+<html lang="en" style="overflow-x:hidden ">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=6, user-scalable=yes">
+    <meta name="description" content="وبسایت ثبت درخواست فارغ التحصیلی دانشجویان دانشکده فنی و مهندسی پسران شماره دو شهید شمسی پور" />
+    <title>@ViewData["Title"] - سیستم ثبت درخواست فارغ التحصیلی</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap-custom-min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site-min.css" />
+    <link href="~/css/Font.css" rel="stylesheet" />
+    <link href="~/css/icons/all.css" rel="stylesheet" />
+    <link href="~/css/icons/brands.css" rel="stylesheet" />
+</head>
+<body class="embed-responsive"style="background: linear-gradient(180deg,rgba(100,116,139,.08) 44.21%,rgba(100,116,139,0));">
+    <header>
+        <div class="overlay">
+        </div>
+        <div id="sideActive" style="background-color: #22cdad">
+            <div class="">
+                <nav id="sidebar" style="overflow-y: scroll;">
+                    <div class="sidebar-header">
+                        <h5 class="text-center font-weight-bolder">سامانه ثبت درخواست فارغ التحصیلی</h5>
+                    </div>
+
+                    <ul class="list-unstyled-rtl components ">
+                        <!--<p>Dummy Heading</p>-->
+                        <li class="active">
+                            <a id="homeSubmenu" asp-controller="Home" asp-action="Index"
+                               aria-expanded="false">خانه</a>
+                        </li>
+
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a class="Login" aria-expanded="false" asp-controller="Account" asp-action="Register">ورود دانشجویان</a>
+                            </li>
+                            <li>
+                                <a class="Login" aria-expanded="false" asp-controller="Account" asp-action="ResponsiblesRegister">ورود کارشناسان</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="LogOut" aria-expanded="false" asp-controller="Account" asp-action="Logout">خروج</a>
+                            </li>
+                        }
+                        <li>
+                            <a href="#">درباره</a>
+                            @if (User.HasClaim("IsResponsible", "true") && User.Identity.IsAuthenticated)
+                            {
+                                <a id="pageSubmenu" href="#pageSubmenu2"
+                                   data-toggle="collapse"
+                                   aria-expanded="false">صفحات</a>
+                                <ul class="collapse list-unstyled" id="pageSubmenu2">
+                                    @if (_scope.IsInRole("EduExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="EduExpert" asp-action="Index">کارشناس آموزش</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("GraduatesExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="GraduatesExpert" asp-action="Index">کارشناس فارغ التحصیلان</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("FinancialExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="Financial" asp-action="Index">کارشناس امور مالی</a>
+                                        </li>
+                                    }
+
+                                    @if (_scope.IsInRole("DormExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="Dorm" asp-action="Index">مسئول خوابگاه</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("LibraryExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="Library" asp-action="Index">مسئول کتابخانه</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("LaboratoryExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="Laboratory" asp-action="Index">مسئول آزمایشگاه</a>
+
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("ThesisExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="ThesisExpert" asp-action="Index">مسئول پایان نامه</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("ItExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="ITExpert" asp-action="Index">مسئول بخش IT </a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("ResearchExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="ResearchAssistant" asp-action="Index">معاونت پژوهشی </a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("AffairsExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="StudentAffairs" asp-action="Index">کارشناس امور دانشجویی</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("EduExpert", User))
+                                    {
+                                        <li>
+                                            <a class="" asp-controller="FinalGraduatesExpert" asp-action="Index">کارشناس فارغ التحصیلان بخش دوم </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                        @if (_scope.IsInRole("Manager", User))
+                        {
+                            <li>
+                                <a class="" asp-controller="Manager" asp-action="Index">مدیریت دانشجویان </a>
+                            </li>
+                        }
+                        <li>
+                            <a href="#">ارتباط</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid" style="justify-content: flex-end ">
+                        <div class="navbar-header">
+                            <button type="button"
+                                    id="sidebarCollapse"
+                                    aria-label="Left Align" class="btn btn-info navbar-btn active">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-sm  navbar-light bg-white border-bottom box-shadow mb-3 nav-background">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index" style="word-break: unset;">سامانه درخواست فارغ التحصیلی</a>
+
+                @if (User.HasClaim("IsResponsible", "true") && User.Identity.IsAuthenticated)
+                {
+                    <ul id="responsiblesTab" class="mb-0">
+                        <li class="nav-item list-unstyled">
+                            <details dir="rtl">
+                                <summary class="radios text-center shadow">
+                                    بخش مورد نظر را انتخاب کنید
+                                </summary>
+                                <ul class="list selectul text-right pr-4 shadow-lg " style="border-radius: 15px">
+                                    @if (_scope.IsInRole("EduExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="EduExpert" asp-action="Index">کارشناس آموزش</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("GraduatesExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="GraduatesExpert" asp-action="Index">کارشناس فارغ التحصیلان</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("FinancialExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="Financial" asp-action="Index">کارشناس امور مالی</a>
+                                        </li>
+                                    }
+
+                                    @if (_scope.IsInRole("DormExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="Dorm" asp-action="Index">مسئول خوابگاه</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("LibraryExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="Library" asp-action="Index">مسئول کتابخانه</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("LaboratoryExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="Laboratory" asp-action="Index">مسئول آزمایشگاه</a>
+
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("ThesisExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="ThesisExpert" asp-action="Index">مسئول پایان نامه</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("ItExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="ITExpert" asp-action="Index">مسئول بخش IT </a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("ResearchExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="ResearchAssistant" asp-action="Index">معاونت پژوهشی </a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("AffairsExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="StudentAffairs" asp-action="Index">کارشناس امور دانشجویی</a>
+                                        </li>
+                                    }
+                                    @if (_scope.IsInRole("EduExpert", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="FinalGraduatesExpert" asp-action="Index">کارشناس فارغ التحصیلان بخش دوم </a>
+                                        </li>
+                                    }
+
+                                    @if (_scope.IsInRole("Manager", User))
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-controller="Manager" asp-action="Index">مدیریت دانشجویان </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+                }
+
+                <ul id="navButtons" class="navbar-nav">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-cyan shadow ml-5" asp-controller="Account" asp-action="Register">ورود دانشجویان</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-cyan shadow" asp-controller="Account" asp-action="ResponsiblesRegister">ورود مسئولان</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="nav-link btn btn-cyan shadow" asp-controller="Account" asp-action="Logout">خروج</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="pb-7">
+        <main role="main" class="pb-3" >
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container text-right text-footer">
+            &copy; 2021 - تمامی حقوق محفوظ است
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site-min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Modals", false)
+
+</body>
+</html>
