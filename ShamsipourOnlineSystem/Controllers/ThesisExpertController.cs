@@ -16,7 +16,7 @@ namespace ShamsipourOnlineSystem.Controllers
     
     public class ThesisExpertController : Controller
     {
-        private ShamsipourOnlineSystem_DBContext _context;
+        private readonly ShamsipourOnlineSystem_DBContext _context;
 
         public ThesisExpertController(ShamsipourOnlineSystem_DBContext context)
         {

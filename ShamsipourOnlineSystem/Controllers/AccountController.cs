@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using ShamsipourOnlineSystem.Data;
 using ShamsipourOnlineSystem.Models;
 using ShamsipourOnlineSystem.ViewModels;
@@ -14,7 +15,7 @@ namespace ShamsipourOnlineSystem.Controllers
 {
     public class AccountController : Controller
     {
-        private ShamsipourOnlineSystem_DBContext _context;
+        private readonly ShamsipourOnlineSystem_DBContext _context;
 
         public AccountController(ShamsipourOnlineSystem_DBContext context)
         {
@@ -35,7 +36,7 @@ namespace ShamsipourOnlineSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(StudentRegisterViewModel register)
+        public async Task<IActionResult> Register(StudentRegisterViewModel register)
         {
             if (register.NationalNo != null && register.StudentId != null)
             {
@@ -46,10 +47,10 @@ namespace ShamsipourOnlineSystem.Controllers
                         StudentId = register.StudentId,
                         NationalNo = register.NationalNo,
                     };
-                    if (!_context.Students.Any(r => r.StudentId == register.StudentId))
+                    if (!await _context.Students.AnyAsync(r => r.StudentId == register.StudentId))
                     {
-                        _context.Students.Add(student);
-                        _context.SaveChanges();
+                        await _context.Students.AddAsync(student);
+                        await _context.SaveChangesAsync();
                     }
 
                     var claims = new List<Claim>
@@ -68,7 +69,7 @@ namespace ShamsipourOnlineSystem.Controllers
                         IsPersistent = true
                     };
 
-                    HttpContext.SignInAsync(principal, properties);
+                    await HttpContext.SignInAsync(principal, properties);
 
                     return Json(true);
                 }
@@ -76,7 +77,7 @@ namespace ShamsipourOnlineSystem.Controllers
             return Json(false);
         }
         [HttpPost]
-        public IActionResult ResponsiblesRegister(ResponsibleRegisterViewModel register)
+        public async Task<IActionResult> ResponsiblesRegister(ResponsibleRegisterViewModel register)
         {
             if (register.NationalNo != null && register.ResponsibleId != null)
             {
@@ -88,14 +89,59 @@ namespace ShamsipourOnlineSystem.Controllers
                         NationalNo = register.NationalNo
 
                     };
-                    if (!_context.Responsibles.Any(r => r.ResponsibleId == register.ResponsibleId))
+                    if (!await _context.Responsibles.AnyAsync(r => r.ResponsibleId == register.ResponsibleId))
                     {
-                        _context.Responsibles.Add(responsible);
-                        _context.SaveChanges();
+                        await _context.Responsibles.AddAsync(responsible);
+                        await _context.SaveChangesAsync();
+                        await _context.UserRoles.AddRangeAsync(new List<UserRole>(){new()
+                        {
+
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="DormExpert")
+                        },new (){
+
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="EduExpert")
+                        },new ()
+                        {
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="GraduatesExpert")
+
+                        },new ()
+                        {
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="FinancialExpert")
+
+                        },new ()
+                        {
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="ItExpert")
+
+                        },new ()
+                        {
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="LaboratoryExpert")
+
+                        },new ()
+                        {
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="LibraryExpert")
+
+                        },new ()
+                        {
+                            UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="Manager")
+
+                        },new ()
+                            {
+                                UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="ResearchExpert")
+                            }
+                            ,new ()
+                            {
+                                UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="AffairsExpert")
+                            }
+                            ,new ()
+                            {
+                                UserId = responsible.Id,Role = await _context.Roles.SingleOrDefaultAsync(r=>r.RoleName=="ThesisExpert")
+                            }
+                        });
+                        await _context.SaveChangesAsync();
                     }
 
 
-                    var res = _context.Responsibles.FirstOrDefault(r => r.ResponsibleId == register.ResponsibleId);
+                    var res = await _context.Responsibles.FirstOrDefaultAsync(r => r.ResponsibleId == register.ResponsibleId);
 
                     var claims = new List<Claim>
                     {
@@ -113,7 +159,7 @@ namespace ShamsipourOnlineSystem.Controllers
                         IsPersistent = true
                     };
 
-                    HttpContext.SignInAsync(principal, properties);
+                    await HttpContext.SignInAsync(principal, properties);
 
                     return Json(true);
                 }

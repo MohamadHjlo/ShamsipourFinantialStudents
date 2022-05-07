@@ -39,7 +39,7 @@ namespace ShamsipourOnlineSystem.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=EBRAHIMH;Initial Catalog=ShamsipourOnlineSystem_DB;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=MOHAMAD;Initial Catalog=Shamsipour_db;Integrated Security=true;MultipleActiveResultSets=true");
             }
         }
 
@@ -277,7 +277,62 @@ namespace ShamsipourOnlineSystem.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserRoles_UserRoles_ResponsibleID");
             });
-
+            modelBuilder.Entity<Role>().HasData(new Role()
+            {
+                Id = 1,
+                RoleName = "DormExpert"
+            },
+            new Role()
+            {
+                Id = 2,
+                RoleName = "EduExpert"
+            },
+            new Role()
+            {
+                Id = 3,
+                RoleName = "GraduatesExpert"
+            },
+            new Role()
+            {
+                Id = 4,
+                RoleName = "FinancialExpert"
+            },
+            new Role()
+            {
+                Id = 5,
+                RoleName = "ItExpert"
+            },
+            new Role()
+            {
+                Id = 6,
+                RoleName = "LaboratoryExpert"
+            },
+            new Role()
+            {
+                Id = 7,
+                RoleName = "LibraryExpert"
+            },
+            new Role()
+            {
+                Id = 8,
+                RoleName = "Manager"
+            },
+            new Role()
+            {
+                Id = 9,
+                RoleName = "ResearchExpert"
+            },
+            new Role()
+            {
+                Id = 10,
+                RoleName = "AffairsExpert"
+            },
+            new Role()
+            {
+                Id = 11,
+                RoleName = "ThesisExpert"
+            }
+          );
             OnModelCreatingPartial(modelBuilder);
         }
 

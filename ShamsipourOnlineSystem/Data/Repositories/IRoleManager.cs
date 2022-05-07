@@ -15,7 +15,7 @@ namespace ShamsipourOnlineSystem.Data.Repositories
     }
     public class RoleManager : AuthorizeAttribute, IAuthorizationFilter,IRoleManager
     {
-        string _roleName;
+        readonly string _roleName;
 
         Responsible _user;
         public RoleManager(string roleName)

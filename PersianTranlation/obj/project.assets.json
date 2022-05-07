@@ -8,27 +8,30 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\mohamad\\.nuget\\packages\\": {},
+    "C:\\Users\\mohamadH\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\ProgramData\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mohamad\\source\\repos\\ShamsipourOnlineSystem\\PersianTranlation\\PersianTranlation.csproj",
+      "projectUniqueName": "C:\\Users\\mohamadH\\source\\repos\\ShamsipourFinantialStudents\\PersianTranlation\\PersianTranlation.csproj",
       "projectName": "PersianTranlation",
-      "projectPath": "C:\\Users\\mohamad\\source\\repos\\ShamsipourOnlineSystem\\PersianTranlation\\PersianTranlation.csproj",
-      "packagesPath": "C:\\Users\\mohamad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mohamad\\source\\repos\\ShamsipourOnlineSystem\\PersianTranlation\\obj\\",
+      "projectPath": "C:\\Users\\mohamadH\\source\\repos\\ShamsipourFinantialStudents\\PersianTranlation\\PersianTranlation.csproj",
+      "packagesPath": "C:\\Users\\mohamadH\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mohamadH\\source\\repos\\ShamsipourFinantialStudents\\PersianTranlation\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\ProgramData\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\mohamad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mohamadH\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -67,7 +70,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.2.21420.30\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -11,7 +11,7 @@ namespace ShamsipourOnlineSystem.Components
 {
     public class StudentStatusComponent :ViewComponent
     {
-        private IStudentRepository _studentReposiroty;
+        private readonly IStudentRepository _studentReposiroty;
         private ShamsipourOnlineSystem_DBContext _context;
 
         public StudentStatusComponent(ShamsipourOnlineSystem_DBContext context,IStudentRepository studentReposiroty)

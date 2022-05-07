@@ -10,3 +10,15 @@ C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug
 C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.dll
 C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\ref\PersianTranlation.dll
 C:\Users\mohamad\source\repos\ShamsipourOnlineSystem\PersianTranlation\obj\Debug\net5.0\PersianTranlation.pdb
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\bin\Debug\net5.0\PersianTranlation.deps.json
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\bin\Debug\net5.0\PersianTranlation.dll
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\bin\Debug\net5.0\ref\PersianTranlation.dll
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\bin\Debug\net5.0\PersianTranlation.pdb
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.csproj.AssemblyReference.cache
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.GeneratedMSBuildEditorConfig.editorconfig
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.AssemblyInfoInputs.cache
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.AssemblyInfo.cs
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.csproj.CoreCompileInputs.cache
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.dll
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\ref\PersianTranlation.dll
+D:\Downloads\ShamsipourFinantialStudents-Master\ShamsipourFinantialStudents-Master\PersianTranlation\obj\Debug\net5.0\PersianTranlation.pdb

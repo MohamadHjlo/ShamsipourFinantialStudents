@@ -30,7 +30,7 @@ namespace ShamsipourOnlineSystem
         {
             services.AddDbContext<ShamsipourOnlineSystem_DBContext>
             (options =>
-                options.UseSqlServer(@"Data Source=EBRAHIMH;Initial Catalog=ShamsipourOnlineSystem_DB;Integrated Security=true")
+                options.UseSqlServer(@"Data Source=MOHAMAD;Initial Catalog=Shamsipour_db;Integrated Security=true;MultipleActiveResultSets=true")
                 );
 
             #region IOC

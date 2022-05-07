@@ -15,7 +15,7 @@ namespace ShamsipourOnlineSystem.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ShamsipourOnlineSystem_DBContext _context;
+        private readonly ShamsipourOnlineSystem_DBContext _context;
         private readonly ScopeContext _scopeContext;
 
         public HomeController(ILogger<HomeController> logger, ShamsipourOnlineSystem_DBContext context, ScopeContext scopeContext)

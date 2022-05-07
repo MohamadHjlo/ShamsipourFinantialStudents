@@ -16,7 +16,7 @@ namespace ShamsipourOnlineSystem.Controllers
     
     public class FinalGraduatesExpertController : Controller
     {
-        private ShamsipourOnlineSystem_DBContext _context;
+        private readonly ShamsipourOnlineSystem_DBContext _context;
 
         public FinalGraduatesExpertController(ShamsipourOnlineSystem_DBContext context)
         {

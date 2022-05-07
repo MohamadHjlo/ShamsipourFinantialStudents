@@ -11,7 +11,7 @@ namespace ShamsipourOnlineSystem.Data
 {
     public class ScopeContext
     {
-        private ShamsipourOnlineSystem_DBContext _context;
+        private readonly ShamsipourOnlineSystem_DBContext _context;
 
         public ScopeContext(ShamsipourOnlineSystem_DBContext context)
         {

@@ -16,7 +16,7 @@ namespace ShamsipourOnlineSystem.Controllers
     
     public class LaboratoryController : Controller
     {
-        private ShamsipourOnlineSystem_DBContext _context;
+        private readonly ShamsipourOnlineSystem_DBContext _context;
 
         public LaboratoryController(ShamsipourOnlineSystem_DBContext context)
         {
