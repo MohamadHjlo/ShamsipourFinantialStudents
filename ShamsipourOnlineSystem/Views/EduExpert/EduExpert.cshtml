@@ -1,0 +1,211 @@
+﻿@using PersianTranlation.DateConvertor
+@using System.Linq
+@model EduExpertViewModel
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="mt-5 mb-5 text-title">سامانه ثبت درخواست فارغ التحصیلی دانشجویان </h1>
+        <h2 class="mt-5 mb-5 text-title-experts">پنل کارشناس آموزش </h2>
+        <a class="btn btn-magenta mb-1" asp-action="GetHistoryOfStudents">نمایش تاریخچه اعمال انجام شده</a>
+        <div class="page-active">
+            <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-12 box-shadow pt-5 box-container mt-5 pb-3">
+                @if (Model.EduExpertStudents.Count != 0)
+                {
+                    <table class="table table-bordered table-responsive-sm table-hover">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 9%;">شماره دانشجویی</th>
+                                <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 2%;">شماره درخواست</th>
+                                <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 9%;">تاریخ درخواست</th>
+                                <th tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 10%;">وضعیت</th>
+                                <th tabindex="2" aria-controls="DataTables_Table_0" rowspan="2" colspan="2" style="width: 60%;">دستورات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.EduExpertStudents)
+                            {
+                                <tr>
+                                    <td>@item.StudentId</td>
+                                    <td>@item.Id</td>
+                                    <td>@(item.Students.FirstOrDefault(s=>s.EduExpertId==item.Id).RequestTime==null?"ثبت نشده":item.Students.FirstOrDefault(s=>s.EduExpertId==item.Id).RequestTime.Value.ToShamsiCalender())</td>
+                                    <td>@(item.StageStatus==null?"در انتظار تایید":(item.StageStatus==false?"رد شده به عنوان نقصی":"تایید شده"))</td>
+                                    <td>
+                                        <button onclick="GetStudentDescrbtion('@item.StudentDescribtion')" class="btn btn-info">مشاهده توضیحات دانشجو</button>
+                                        <button onclick="AcceptStudent('@item.StudentId', '@item.StudentDescribtion', 'EduExpert/SetAsSuccessed')" class="btn btn-darkaqua">تایید مدارک</button>
+                                        <button onclick="ReverseStudent('@item.StudentId')" class="btn btn--danger">نقص مدارک</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-danger">درخواست فعالی وجود ندارد</div>
+                }
+
+                <button id="btnShowReversedStudents" class="btn btn-warning mb-5 mt-3">مشاهده دانشجویان برگشت خورده </button>
+            </div>
+        </div>
+
+
+        <div class="page-cloned" style="display: none">
+            <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-12 box-shadow pt-5 box-container mt-5 pb-3">
+                <table class="table table-bordered table-responsive-sm table-hover">
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th>شماره دانشجویی</th>
+                            <th>شماره درخواست</th>
+                            <th>وضعیت</th>
+                            <th>دستورات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model.ReversedStudentsFromGradExpert.Count != 0)
+                        {
+                            @foreach (var item in Model.ReversedStudentsFromGradExpert)
+                            {
+                                <tr>
+                                    <td>@item.StudentId</td>
+                                    <td>@item.Id</td>
+                                    <td>در انتظار تایید</td>
+                                    <td>
+                                        <button onclick="GetStudentDescrbtion('@item.StudentDescribtion')" class="btn btn-info">مشاهده توضیحات دانشجو</button>
+                                        <button onclick="AcceptStudent('@item.StudentId', '@item.StudentDescribtion','EduExpert/SetAsSuccessed')" class="btn btn-darkaqua">تایید مدارک</button>
+                                        <button onclick="GetGradExpertDescribtion('@item.GradReverseDescribtion')" class="btn btn-darkaqua">مشاهده توضیحات کارشناس فارغ التحصیلان</button>
+                                        <button onclick="ReverseStudent('@item.StudentId')" class="btn btn--danger">نقص مدارک</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">درخواست فعالی وجود ندارد</div>
+                        }
+
+                    </tbody>
+                </table>
+                <button id="btnShowNormalStudents" class="btn btn-warning mb-5 mt-3"> مشاهده دانشجویان در انتظار ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/site-min.js"></script>
+    <script>
+        $("#btnShowReversedStudents").on('click', function () {
+
+            $(this).closest("div .page-active").css("display", "none");
+            $(this).closest("div .page-active").attr("class", "page-cloned");
+            $("#btnShowNormalStudents").closest("div .page-cloned").css("display", "");
+            $("#btnShowNormalStudents").closest("div .page-cloned").attr("class", "page-active");
+
+        });
+        $("#btnShowNormalStudents").on('click', function () {
+
+            $(this).closest("div .page-active").css("display", "none");
+            $(this).closest("div .page-active").attr("class", "page-cloned");
+            $("#btnShowReversedStudents").closest("div .page-cloned").css("display", "");
+            $("#btnShowReversedStudents").closest("div .page-cloned").attr("class", "page-active");
+
+        });
+
+
+        function GetGradExpertDescribtion(gradDescribtion) {
+
+
+            $('#GradDescribtion').val(gradDescribtion);
+
+            $('#ShowGradExpertDescribtion').modal('show');
+        }
+
+
+
+    </script>
+
+}
+
+@section Modals
+{
+    <div class="modal fade" id="ShowDescribtion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">توضیحات دانشجو</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="basicInput"></label>
+                            <textarea style="height: 130px" class="col-12" id="StudentDescribtion" placeholder="توضیحی ثبت نشده"></textarea>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn--danger text-white" data-dismiss="modal">بستن</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ShowReverseDescribtion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">توضیحات نقصی مدارک برای دانشجو</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <input type="hidden" id="StudentID" />
+                            <label for="basicInput"></label>
+                            <textarea style="height: 130px" class="col-12" id="ReverseToStudent" placeholder="توضیحات نقصی مدارک دانشجو برای نمایش در پنل شخص را وارد کنید"></textarea>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn--danger text-white" data-dismiss="modal">بستن</a>
+                    <a onclick="SetStAsReversed('EduExpert/SetAsReversed')" class="btn btn-darkaqua text-white" data-dismiss="modal">ارسال</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ShowGradExpertDescribtion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">توضیحات مسئول فارغ التحصیلان</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="basicInput"></label>
+                            <textarea style="height: 130px" class="col-12" id="GradDescribtion"> </textarea>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn--danger text-white" data-dismiss="modal">بستن</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}

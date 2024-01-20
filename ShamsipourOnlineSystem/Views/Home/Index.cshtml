@@ -1,0 +1,98 @@
+﻿@model IndexViewModel
+@using PersianTranlation.DateConvertor
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <div class="page-active">
+        <div class="">
+            <div class="site-background">
+                <div class="container">
+                    <h1 class="mt-5 mb-5 text-title mt-n3 site-title">
+                        سامانه ثبت درخواست فارغ التحصیلی دانشجویان
+                    </h1>
+                    <img src="~/DesignTemplates/Images/1200px-STVC.png.webp" alt="دانشکده فنی حرفه ای" width="100" height="125" class="img-shamsipour" />
+                    <img src="~/DesignTemplates/Images/College.webp" alt="دانشکده شهید شمسی پور" width="110" height="110" class="img-college" />
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-3">
+            <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-12 box-container rounded-xl bg-white mt-4">
+
+                <h2 class="pt-5 pb-4 text-title">لطفا متن زیر را با دقت مطالعه نموده و سپس درخواست خود را ثبت کنید </h2>
+
+
+                <p class="text-justify text-capitalize mr-5 ml-5 lead" style="line-height: normal">لورم ایپسوم یا طرح‌نما (به انگلیسی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد. معمولا طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفا به مشتری یا صاحب کار خود نشان دهند که صفحه طراحی یا صفحه بندی شده بعد از اینکه متن در آن قرار گیرد چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته شده‌است. از آنجایی که طراحان عموما نویسنده متن نیستند و وظیفه رعایت حق تکثیر متون را ندارند و در همان حال کار آنها به نوعی وابسته به متن می‌باشد آنها با استفاده از محتویات ساختگی، صفحه گرافیکی خود را صفحه‌آرایی می‌کنند تا مرحله طراحی و صفحه‌بندی را به پایان برند.</p>
+
+                <form class="form checkinput">
+                    <div class="inputGroup">
+                        <input id="checkAgreement" name="option1" type="checkbox" />
+                        <label class="customcheck" for="checkAgreement">قوانین را می پذیرم</label>
+                    </div>
+                    
+                </form>
+
+                <div class="mr-5 ml-5">
+                    <textarea id="Describtion" class="container student-describtion lead" placeholder="در صورت نیاز توضیحاتی وارد کنید"></textarea>
+                </div>
+                <button id="btnsubmit" class="btn btn-darkaqua shadow mb-5 mt-3">ثبت درخواست</button>
+
+
+                <input id="SetId" type="hidden" value="" />
+
+                <button id="btnShowHistory" class="btn btn-info shadow mb-5 mt-3">مشاهده درخواست فعال</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="page-cloned" style="display: none">
+        <div class="container ">
+            <h1 class="mt-5 mb-5 text-title">سامانه ثبت درخواست فارغ التحصیلی دانشجویان </h1>
+            <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-12 box-container rounded-xl pt-5 bg-white">
+                @if (Model.Student?.IsPending != null)
+                {
+                    <table class="table table-bordered table-responsive-sm">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>شماره درخواست</th>
+                                <th>تاریخ</th>
+                                <th>وضعیت</th>
+                                <th>دستورات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>@(Model.Student.RequestTime != null&&Model.Student.RequestTime.Value==null?"ثبت نشده":Model.Student.RequestTime.Value.ToShamsiCalender())</td>
+                                <td>@(Model.Student.IsPending==true?"درحال پردازش": Model.Student.IsFinaled == true?"تکمیل شده": Model.Student.IsReversed == true?"برگشت خورده با عنوان نقصی مدارک":"")</td>
+                                <td>
+                                    @await Component.InvokeAsync("StudentStatusComponent", User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                }
+                else
+                {
+                    <h3 class="alert alert-info">شما تا کنون درخواستی ثبت نکرده اید</h3>
+                }
+                <button id="btnHideHistory" class="btn btn--danger shadow mb-5 mt-3">بازگشت</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/Index-min.js"></script>
+
+}
+
+
